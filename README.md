@@ -1,111 +1,83 @@
-# PlantScan — Plant Disease Classifier
+# 🌿 Plant Disease Detector
 
-VGG16-based plant disease classifier with FastAPI backend + HTML frontend, deployable on Render.
+An AI-powered web app that detects plant diseases from leaf images using a VGG16 deep learning model.
 
----
-
-## Step 1 — Fix your notebook before exporting
-
-Add these two cells at the end of your Colab notebook and run them:
-
-### Cell A — Save model in new format + class names
-```python
-import json
-
-# Save class names (required for prediction labels)
-class_names = train_set.class_names
-with open("class_names.json", "w") as f:
-    json.dump(class_names, f)
-print(f"Saved {len(class_names)} class names.")
-
-# Save model in .keras format (preferred over .h5)
-model.save("vgg16_plant_disease_model.keras")
-print("Model saved.")
-```
-
-### Cell B — Download both files to your PC
-```python
-from google.colab import files
-files.download("vgg16_plant_disease_model.keras")
-files.download("class_names.json")
-```
+🔗 **Live Demo:** [https://plant-disease-detector-shu.onrender.com](https://plant-disease-detector-shu.onrender.com)
 
 ---
 
-## Project Structure
+## 🖼️ How It Works
+
+1. Upload a leaf image (JPG, PNG, WEBP)
+2. Click **Analyse Leaf**
+3. Get instant disease diagnosis with confidence score
+
+---
+
+## 🧠 Model
+
+- **Architecture:** VGG16 (Transfer Learning)
+- **Dataset:** New Plant Diseases Dataset (Kaggle)
+- **Classes:** 38 plant disease categories
+- **Framework:** TensorFlow / Keras
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | HTML, CSS, JavaScript |
+| Backend | FastAPI (Python) |
+| Model | VGG16 + TensorFlow |
+| Deployment | Render |
+
+---
+
+## 📁 Project Structure
 
 ```
-plant-disease-app/
-├── backend/
-│   └── app.py                   # FastAPI app
-├── frontend/
-│   └── index.html               # Frontend UI
-├── vgg16_plant_disease_model.keras   # ← put downloaded model here
-├── class_names.json                  # ← put downloaded class names here
-├── requirements.txt
-└── render.yaml
+plant-disease-detector/
+├── app.py                          # FastAPI backend
+├── index.html                      # Frontend UI
+├── class_names.json                # 38 disease class labels
+├── requirements.txt                # Python dependencies
+├── .python-version                 # Python 3.11.9
+└── vgg16_plant_disease_model.keras # Trained model
 ```
 
 ---
 
-## Step 2 — Run locally to test
+## 🚀 Run Locally
 
 ```bash
+# Clone the repo
+git clone https://github.com/YOUR_USERNAME/plant-disease-detector.git
+cd plant-disease-detector
+
+# Create virtual environment
+python -m venv myvenv
+myvenv\Scripts\activate   # Windows
+# source myvenv/bin/activate  # Mac/Linux
+
 # Install dependencies
 pip install -r requirements.txt
 
-# Start the server (from project root)
-uvicorn backend.app:app --reload --port 8000
+# Run the app
+uvicorn app:app --reload --port 8000
 ```
 
-Open http://localhost:8000 in your browser.
+Open **http://localhost:8000** in your browser.
 
 ---
 
-## Step 3 — Deploy on Render
+## 🌱 Supported Plants & Diseases
 
-1. Push this entire folder to a **GitHub repo** (include the `.keras` and `.json` files, or use Git LFS for large model files).
-
-2. Go to https://render.com → **New** → **Web Service**
-
-3. Connect your GitHub repo.
-
-4. Render settings:
-   - **Build command:** `pip install -r requirements.txt`
-   - **Start command:** `uvicorn backend.app:app --host 0.0.0.0 --port $PORT`
-   - **Python version:** 3.11
-
-5. Click **Deploy** — Render will build and serve your app.
-
-> **Note on model size:** VGG16 `.keras` files are typically 500MB–1GB.
-> GitHub has a 100MB file limit, so use **Git LFS** for the model file:
-> ```bash
-> git lfs install
-> git lfs track "*.keras"
-> git add .gitattributes
-> git add vgg16_plant_disease_model.keras
-> git commit -m "Add model via LFS"
-> ```
-> Alternatively, host the model on Google Drive and download it at startup (ask if you need this approach).
+The model can detect diseases in:
+Apple, Blueberry, Cherry, Corn, Grape, Orange, Peach, Pepper, Potato, Raspberry, Soybean, Squash, Strawberry, Tomato and more — across **38 disease categories**.
 
 ---
 
-## API Endpoints
+## 📬 Contact
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/health` | Check if model is loaded |
-| POST | `/predict` | Upload image → get top-3 disease predictions |
-| GET | `/` | Serves the frontend |
-
-### Example predict response
-```json
-{
-  "predictions": [
-    { "plant": "Apple", "disease": "Apple Scab", "confidence": 94.32 },
-    { "plant": "Apple", "disease": "Black Rot",  "confidence":  3.21 },
-    { "plant": "Apple", "disease": "Cedar Rust", "confidence":  1.87 }
-  ]
-}
-```
-"# PLANT-DISEASE-DETECTOR" 
+Made with ❤️ by [Shubham kumar](https://github.com/shubhamkumar62092)
